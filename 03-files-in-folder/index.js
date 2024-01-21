@@ -20,12 +20,12 @@ function getReadableSize(size) {
   const files = await fs.readdir(dirPath, readOptions);
   for (const file of files) {
     if (file.isFile()) {
-      let fileData = file.name.split('.');
-      let fileSize = getReadableSize(
-        (await fs.stat(path.join(dirPath, file.name))).size,
-      );
-      fileData.push(fileSize);
-      process.stdout.write(`\n${fileData.join(' - ')}`);
+      const fileNameArr = file.name.split('.');
+      const fileExt = fileNameArr.pop();
+      const fileName = fileNameArr.join('.');
+      const filePath = path.join(dirPath, file.name);
+      const fileSize = getReadableSize((await fs.stat(filePath)).size);
+      process.stdout.write(`\n${fileName} - ${fileExt} - ${fileSize}`);
     }
   }
 })();
